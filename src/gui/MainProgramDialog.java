@@ -1,21 +1,46 @@
 package gui;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import model.DbModel;
+import model.Game;
+
 /**
  *
  * @author GAJDA NORBERT
  */
-public class MainProgramDialog extends javax.swing.JDialog {
+public class MainProgramDialog extends javax.swing.JDialog implements TableModelListener{
 
+    DbModel model;
+    DefaultTableModel dtm;
+    List<Game> games;
     
-    public MainProgramDialog(java.awt.Frame parent, String username) {
+    
+    public MainProgramDialog(java.awt.Frame parent, DbModel model, String username) {
         super(parent, true);
         initComponents();
+        this.model = model;
         parent.setVisible(false);
         setTitle("Video Game Rentals");
         setLocationRelativeTo(parent);
         
         lblWelcome.setText(username);
+        try {
+            games = model.getAllVideoGames();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Adatbázis hiba", JOptionPane.ERROR_MESSAGE);
+        }
         
+        dtm = (DefaultTableModel) tblGames.getModel();
+        dtm.addTableModelListener(this);
         
         
        
@@ -41,6 +66,8 @@ public class MainProgramDialog extends javax.swing.JDialog {
         tbtnMembers = new javax.swing.JToggleButton();
         tbtnVideoGames = new javax.swing.JToggleButton();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblGames = new javax.swing.JTable();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -85,7 +112,7 @@ public class MainProgramDialog extends javax.swing.JDialog {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(243, 243, 243)
                 .addComponent(lblRentals, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(254, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,6 +153,11 @@ public class MainProgramDialog extends javax.swing.JDialog {
         tbtnVideoGames.setForeground(new java.awt.Color(204, 204, 204));
         tbtnVideoGames.setText("Video Games");
         tbtnVideoGames.setBorder(null);
+        tbtnVideoGames.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbtnVideoGamesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -160,15 +192,40 @@ public class MainProgramDialog extends javax.swing.JDialog {
 
         jPanel6.setBackground(new java.awt.Color(102, 102, 102));
 
+        tblGames.setBackground(new java.awt.Color(102, 102, 102));
+        tblGames.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        tblGames.setForeground(new java.awt.Color(204, 204, 204));
+        tblGames.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Platform", "Genre", "In "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tblGames.setFillsViewportHeight(true);
+        tblGames.setGridColor(new java.awt.Color(102, 102, 102));
+        tblGames.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tblGames.setSelectionForeground(new java.awt.Color(102, 102, 102));
+        jScrollPane1.setViewportView(tblGames);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 829, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 634, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -198,6 +255,31 @@ public class MainProgramDialog extends javax.swing.JDialog {
        
     }//GEN-LAST:event_btnLogoutActionPerformed
 
+    private void tbtnVideoGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnVideoGamesActionPerformed
+    
+        dtm.getDataVector().clear();
+        dtm.fireTableDataChanged();
+        
+      
+            
+            for (Game game : games) {
+                Vector row = new Vector();
+
+                row.add(game.getName());
+                row.add(game.getGenre());
+                row.add(game.getPlatform());
+                if (game.getMembers_id() == 0) {
+                     row.add(true);
+                } else {
+                    row.add(false);
+                }
+
+                dtm.addRow(row);
+            }
+      
+        
+    }//GEN-LAST:event_tbtnVideoGamesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -211,9 +293,16 @@ public class MainProgramDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblRentals;
     private javax.swing.JLabel lblWelcome;
+    private javax.swing.JTable tblGames;
     private javax.swing.JToggleButton tbtnMembers;
     private javax.swing.JToggleButton tbtnVideoGames;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void tableChanged(TableModelEvent arg0) {
+
+    }
 }

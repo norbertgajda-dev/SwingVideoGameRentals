@@ -42,6 +42,8 @@ public class DbModel {
         addMemberPstmt = conn.prepareStatement ("INSERT INTO members (name,email) VALUES (?,?)");
         updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?");
         deleteMemberPstmt = conn.prepareStatement("DELETE FROM members WHERE id=?");
+        
+        getAllGamesPstmt = conn.prepareStatement("SELECT * FROM games");
 
       }
 
@@ -83,6 +85,28 @@ public class DbModel {
         deleteEmployeePstmt.setInt(1, employee.getId());
         
         return deleteEmployeePstmt.executeUpdate();
+    }
+    
+    
+    
+    
+    
+    public List<Game> getAllVideoGames() throws SQLException{
+        List<Game> games = new ArrayList<>();
+        ResultSet rs = getAllGamesPstmt.executeQuery();
+        
+        while (rs.next()) {
+            games.add(new Game(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("genre"),
+                    rs.getString("platform"),
+                    rs.getInt("members_id"),
+                    rs.getString("rental_date")
+            ));
+        }
+        rs.close();
+        return games;
     }
     
     

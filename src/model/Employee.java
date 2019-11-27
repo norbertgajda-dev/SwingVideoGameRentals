@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author GAJDA NORBERT
  */
-public class Employee {
+public class Employee implements Serializable{
     
     private int id;
     private String name;

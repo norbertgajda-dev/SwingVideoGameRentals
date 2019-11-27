@@ -221,7 +221,7 @@ public class Login extends javax.swing.JFrame {
             username = tfUserName.getText();
             if (employees.containsKey(username)) {
                 if (employees.get(tfUserName.getText()).equals(getMd5(tfPassword.getPassword()))) {
-                    MainProgramDialog mpd = new MainProgramDialog(this, username);
+                    MainProgramDialog mpd = new MainProgramDialog(this, model, username);
                     mpd.setVisible(true);
                     setVisible(true);
                 } else {
