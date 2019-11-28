@@ -38,7 +38,7 @@ public class DbModel {
         addEmployeePstmt = conn.prepareStatement("INSERT INTO employee (name,username,password) VALUES (?,?,?)");
         deleteEmployeePstmt = conn.prepareStatement("DELETE FROM employee WHERE id=?");
         
-        getAllMembersPstmt = conn.prepareStatement("SELECT * FROM members");
+        getAllMembersPstmt = conn.prepareStatement("SELECT * FROM members WHERE id>?");
         addMemberPstmt = conn.prepareStatement ("INSERT INTO members (name,email) VALUES (?,?)");
         updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?");
         deleteMemberPstmt = conn.prepareStatement("DELETE FROM members WHERE id=?");
@@ -90,6 +90,7 @@ public class DbModel {
     
     public List<Member> getAllMembers() throws SQLException {
         List<Member> members = new ArrayList<>();
+        getAllMembersPstmt.setInt(1, 0);
         ResultSet rs = getAllMembersPstmt.executeQuery();
         
         while (rs.next()) {

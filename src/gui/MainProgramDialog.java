@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -73,11 +74,12 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         tblMembers = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        btnLogout = new javax.swing.JButton();
         tbtnMembers = new javax.swing.JToggleButton();
         tbtnVideoGames = new javax.swing.JToggleButton();
-        tbtnManageGames = new javax.swing.JToggleButton();
-        tbtnManageMembers = new javax.swing.JToggleButton();
+        btnManageMembers = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
+        btnManageGames = new javax.swing.JButton();
+        btnManageEmployees = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(102, 102, 102));
@@ -209,7 +211,7 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(243, 243, 243)
                 .addComponent(lblRentals, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(250, Short.MAX_VALUE))
+                .addContainerGap(256, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(tbpGamesMembers, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -231,18 +233,6 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         jPanel4.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel5.setIcon(new javax.swing.ImageIcon("D:\\git\\JavaProject\\SwingVideoGameRentals\\src\\gui\\pictures\\playstation-icon.png")); // NOI18N
-
-        btnLogout.setBackground(new java.awt.Color(102, 102, 102));
-        btnLogout.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnLogout.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogout.setText("Logout");
-        btnLogout.setBorder(null);
-        btnLogout.setBorderPainted(false);
-        btnLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogoutActionPerformed(evt);
-            }
-        });
 
         tbtnMembers.setBackground(new java.awt.Color(102, 102, 102));
         buttonGroup1.add(tbtnMembers);
@@ -268,27 +258,51 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             }
         });
 
-        tbtnManageGames.setBackground(new java.awt.Color(102, 102, 102));
-        buttonGroup1.add(tbtnManageGames);
-        tbtnManageGames.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        tbtnManageGames.setForeground(new java.awt.Color(204, 204, 204));
-        tbtnManageGames.setText("Manage Games");
-        tbtnManageGames.setBorder(null);
-        tbtnManageGames.addActionListener(new java.awt.event.ActionListener() {
+        btnManageMembers.setBackground(new java.awt.Color(102, 102, 102));
+        btnManageMembers.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnManageMembers.setForeground(new java.awt.Color(204, 204, 204));
+        btnManageMembers.setText("Manage Members");
+        btnManageMembers.setBorder(null);
+        btnManageMembers.setBorderPainted(false);
+        btnManageMembers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tbtnManageGamesActionPerformed(evt);
+                btnManageMembersActionPerformed(evt);
             }
         });
 
-        tbtnManageMembers.setBackground(new java.awt.Color(102, 102, 102));
-        buttonGroup1.add(tbtnManageMembers);
-        tbtnManageMembers.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        tbtnManageMembers.setForeground(new java.awt.Color(204, 204, 204));
-        tbtnManageMembers.setText("Manage Members");
-        tbtnManageMembers.setBorder(null);
-        tbtnManageMembers.addActionListener(new java.awt.event.ActionListener() {
+        btnLogout.setBackground(new java.awt.Color(102, 102, 102));
+        btnLogout.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(204, 204, 204));
+        btnLogout.setText("Logout");
+        btnLogout.setBorder(null);
+        btnLogout.setBorderPainted(false);
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tbtnManageMembersActionPerformed(evt);
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        btnManageGames.setBackground(new java.awt.Color(102, 102, 102));
+        btnManageGames.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnManageGames.setForeground(new java.awt.Color(204, 204, 204));
+        btnManageGames.setText("Manage Games");
+        btnManageGames.setBorder(null);
+        btnManageGames.setBorderPainted(false);
+        btnManageGames.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageGamesActionPerformed(evt);
+            }
+        });
+
+        btnManageEmployees.setBackground(new java.awt.Color(102, 102, 102));
+        btnManageEmployees.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnManageEmployees.setForeground(new java.awt.Color(204, 204, 204));
+        btnManageEmployees.setText("Manage Employees");
+        btnManageEmployees.setBorder(null);
+        btnManageEmployees.setBorderPainted(false);
+        btnManageEmployees.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageEmployeesActionPerformed(evt);
             }
         });
 
@@ -299,12 +313,13 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnManageMembers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbtnMembers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tbtnManageMembers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tbtnManageGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbtnVideoGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnManageGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnManageEmployees, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -314,18 +329,20 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
                 .addComponent(jLabel5)
                 .addGap(51, 51, 51)
                 .addComponent(tbtnVideoGames, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(tbtnManageGames, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79)
+                .addGap(31, 31, 31)
                 .addComponent(tbtnMembers, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(tbtnManageMembers, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86)
+                .addComponent(btnManageGames, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(btnManageMembers, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnManageEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63))
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
         );
 
-        jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnLogout, tbtnManageGames, tbtnManageMembers, tbtnMembers, tbtnVideoGames});
+        jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tbtnMembers, tbtnVideoGames});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -346,10 +363,6 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-
-    }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void tbtnVideoGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnVideoGamesActionPerformed
 
@@ -375,13 +388,9 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         }
     }//GEN-LAST:event_tbtnVideoGamesActionPerformed
 
-    private void tbtnManageGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnManageGamesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tbtnManageGamesActionPerformed
-
     private void tbtnMembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnMembersActionPerformed
 
-        //tbtnMembers.setSelected(true);
+        tbtnMembers.setSelected(true);
         tbpGamesMembers.setSelectedIndex(1);
 
         dtmMembers.getDataVector().clear();
@@ -396,12 +405,7 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
             dtmMembers.addRow(row);
         }
-
     }//GEN-LAST:event_tbtnMembersActionPerformed
-
-    private void tbtnManageMembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbtnManageMembersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tbtnManageMembersActionPerformed
 
     private void tbpGamesMembersMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbpGamesMembersMouseReleased
         if (tbpGamesMembers.getSelectedIndex() == 0) {
@@ -410,9 +414,33 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             tbtnMembersActionPerformed(null);
     }//GEN-LAST:event_tbpGamesMembersMouseReleased
 
+    private void btnManageMembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageMembersActionPerformed
+        try {
+            model.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+        System.exit(0);
+    }//GEN-LAST:event_btnManageMembersActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnManageGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageGamesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnManageGamesActionPerformed
+
+    private void btnManageEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageEmployeesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnManageEmployeesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnManageEmployees;
+    private javax.swing.JButton btnManageGames;
+    private javax.swing.JButton btnManageMembers;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
@@ -427,8 +455,6 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
     private javax.swing.JTable tblGames;
     private javax.swing.JTable tblMembers;
     private javax.swing.JTabbedPane tbpGamesMembers;
-    private javax.swing.JToggleButton tbtnManageGames;
-    private javax.swing.JToggleButton tbtnManageMembers;
     private javax.swing.JToggleButton tbtnMembers;
     private javax.swing.JToggleButton tbtnVideoGames;
     // End of variables declaration//GEN-END:variables

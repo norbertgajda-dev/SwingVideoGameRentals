@@ -5,7 +5,9 @@
         <group>
             <file>file:/D:/git/JavaProject/SwingVideoGameRentals/src/model/DbModel.java</file>
             <file>file:/D:/git/JavaProject/SwingVideoGameRentals/src/gui/MainProgramDialog.java</file>
+            <file>file:/D:/git/JavaProject/SwingVideoGameRentals/src/model/Game.java</file>
             <file>file:/D:/git/JavaProject/SwingVideoGameRentals/src/model/Employee.java</file>
+            <file>file:/D:/git/JavaProject/SwingVideoGameRentals/src/model/Member.java</file>
             <file>file:/D:/git/JavaProject/SwingVideoGameRentals/src/gui/Login.java</file>
         </group>
     </open-files>
