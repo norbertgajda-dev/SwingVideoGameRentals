@@ -88,6 +88,20 @@ public class DbModel {
     }
     
     
+    public List<Member> getAllMembers() throws SQLException {
+        List<Member> members = new ArrayList<>();
+        ResultSet rs = getAllMembersPstmt.executeQuery();
+        
+        while (rs.next()) {
+            members.add(new Member(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phone")
+            ));
+        }
+        return members;
+    }
     
     
     
