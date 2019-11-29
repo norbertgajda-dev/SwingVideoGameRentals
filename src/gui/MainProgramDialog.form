@@ -62,21 +62,28 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jLabel1" min="-2" pref="84" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblWelcome" min="-2" pref="143" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="243" max="-2" attributes="0"/>
-                  <Component id="lblRentals" min="-2" pref="332" max="-2" attributes="0"/>
-                  <EmptySpace pref="256" max="32767" attributes="0"/>
-              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   <Component id="tbpGamesMembers" min="-2" pref="808" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jLabel1" min="-2" pref="84" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="243" max="-2" attributes="0"/>
+                          <Component id="lblRentals" min="-2" pref="332" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblWelcome" min="-2" pref="143" max="-2" attributes="0"/>
+                      <Component id="btnLogout" alignment="1" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -88,9 +95,17 @@
                       <Component id="lblWelcome" max="32767" attributes="0"/>
                       <Component id="jLabel1" pref="39" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                  <Component id="lblRentals" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="46" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          <Component id="lblRentals" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="btnLogout" min="-2" pref="32" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace pref="32" max="32767" attributes="0"/>
                   <Component id="tbpGamesMembers" min="-2" pref="616" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               </Group>
@@ -136,7 +151,7 @@
         <Container class="javax.swing.JTabbedPane" name="tbpGamesMembers">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="33" red="33" type="rgb"/>
+              <Color blue="66" green="66" red="66" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
@@ -202,9 +217,9 @@
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="4" rowCount="0">
                             <Column editable="true" title="Name" type="java.lang.String"/>
-                            <Column editable="true" title="Platform" type="java.lang.String"/>
                             <Column editable="true" title="Genre" type="java.lang.String"/>
-                            <Column editable="true" title="In " type="java.lang.Boolean"/>
+                            <Column editable="true" title="Platform" type="java.lang.String"/>
+                            <Column editable="false" title="In Stock" type="java.lang.Boolean"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -345,6 +360,27 @@
             </Container>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="btnLogout">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="66" red="66" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="14" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="cc" red="cc" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Log out"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+            <Property name="borderPainted" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLogoutActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel4">
@@ -364,7 +400,7 @@
                       <Component id="jLabel5" max="32767" attributes="0"/>
                       <Component id="tbtnMembers" alignment="0" max="32767" attributes="0"/>
                       <Component id="tbtnVideoGames" alignment="0" max="32767" attributes="0"/>
-                      <Component id="btnLogout" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnExit" alignment="0" max="32767" attributes="0"/>
                       <Component id="btnManageGames" alignment="0" max="32767" attributes="0"/>
                       <Component id="btnManageEmployees" alignment="0" max="32767" attributes="0"/>
                   </Group>
@@ -388,7 +424,7 @@
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Component id="btnManageEmployees" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btnLogout" min="-2" pref="43" max="-2" attributes="0"/>
+                  <Component id="btnExit" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -469,7 +505,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManageMembersActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnLogout">
+        <Component class="javax.swing.JButton" name="btnExit">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
@@ -480,14 +516,14 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Logout"/>
+            <Property name="text" type="java.lang.String" value="Exit"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
             <Property name="borderPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLogoutActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExitActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnManageGames">

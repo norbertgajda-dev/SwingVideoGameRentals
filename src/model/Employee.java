@@ -16,6 +16,13 @@ public class Employee implements Serializable{
     public Employee() {
     }
 
+    public Employee(String name, String userName, String password) {
+        this.name = name;
+        this.userName = userName;
+        this.password = password;
+    }
+    
+
     public Employee(int id, String name, String userName, String password) {
         this.id = id;
         this.name = name;
@@ -23,6 +30,13 @@ public class Employee implements Serializable{
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return name + " -  Username: " + userName;
+    }
+
+    
+    
     public String getPassword() {
         return password;
     }

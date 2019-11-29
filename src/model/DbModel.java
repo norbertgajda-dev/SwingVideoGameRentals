@@ -34,16 +34,16 @@ public class DbModel {
     public DbModel(Connection conn) throws SQLException {
         this.conn = conn;
 
-        getAllEmployeesPstmt = conn.prepareStatement("SELECT * FROM employees");
-        addEmployeePstmt = conn.prepareStatement("INSERT INTO employee (name,username,password) VALUES (?,?,?)");
+        getAllEmployeesPstmt = conn.prepareStatement("SELECT * FROM employees ORDER BY name ASC");
+        addEmployeePstmt = conn.prepareStatement("INSERT INTO employees (name,username,password) VALUES (?,?,?)");
         deleteEmployeePstmt = conn.prepareStatement("DELETE FROM employee WHERE id=?");
         
-        getAllMembersPstmt = conn.prepareStatement("SELECT * FROM members WHERE id>?");
+        getAllMembersPstmt = conn.prepareStatement("SELECT * FROM members WHERE id>? ORDER BY name ASC");
         addMemberPstmt = conn.prepareStatement ("INSERT INTO members (name,email) VALUES (?,?)");
         updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?");
         deleteMemberPstmt = conn.prepareStatement("DELETE FROM members WHERE id=?");
         
-        getAllGamesPstmt = conn.prepareStatement("SELECT * FROM games");
+        getAllGamesPstmt = conn.prepareStatement("SELECT * FROM games ORDER BY name ASC");
 
       }
 
@@ -76,7 +76,7 @@ public class DbModel {
     public int addEmployee(Employee employee) throws SQLException {
         addEmployeePstmt.setString(1, employee.getName());
         addEmployeePstmt.setString(2, employee.getUserName());
-        addEmployeePstmt.setString(1, employee.getPassword());
+        addEmployeePstmt.setString(3, employee.getPassword());
         
         return addEmployeePstmt.executeUpdate();
     }

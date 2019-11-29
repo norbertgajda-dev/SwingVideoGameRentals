@@ -1,14 +1,12 @@
 package gui;
 
-import java.awt.Color;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.DefaultTableModel;
 import model.DbModel;
 import model.Game;
@@ -35,7 +33,6 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         setLocationRelativeTo(parent);
 
         lblWelcome.setText(username);
-        tbtnVideoGames.setSelected(true);
 
         try {
             games = model.getAllVideoGames();
@@ -52,6 +49,9 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
         //default view will always be the Games table
         tbtnVideoGamesActionPerformed(null);
+
+        //for the tabs UI elements to be simple
+        tbpGamesMembers.setUI(new BasicTabbedPaneUI());
 
     }
 
@@ -72,12 +72,13 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMembers = new javax.swing.JTable();
+        btnLogout = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         tbtnMembers = new javax.swing.JToggleButton();
         tbtnVideoGames = new javax.swing.JToggleButton();
         btnManageMembers = new javax.swing.JButton();
-        btnLogout = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
         btnManageGames = new javax.swing.JButton();
         btnManageEmployees = new javax.swing.JButton();
 
@@ -102,7 +103,7 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Logged in:");
 
-        tbpGamesMembers.setBackground(new java.awt.Color(51, 51, 51));
+        tbpGamesMembers.setBackground(new java.awt.Color(102, 102, 102));
         tbpGamesMembers.setForeground(new java.awt.Color(204, 204, 204));
         tbpGamesMembers.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         tbpGamesMembers.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -121,15 +122,22 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
             },
             new String [] {
-                "Name", "Platform", "Genre", "In "
+                "Name", "Genre", "Platform", "In Stock"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                true, true, true, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tblGames.setFillsViewportHeight(true);
@@ -198,23 +206,39 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
         tbpGamesMembers.addTab("Members", jPanel7);
 
+        btnLogout.setBackground(new java.awt.Color(102, 102, 102));
+        btnLogout.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(204, 204, 204));
+        btnLogout.setText("Log out");
+        btnLogout.setBorder(null);
+        btnLogout.setBorderPainted(false);
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(243, 243, 243)
-                .addComponent(lblRentals, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(256, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(tbpGamesMembers, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(243, 243, 243)
+                        .addComponent(lblRentals, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(107, 107, 107)))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,9 +247,14 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
-                .addGap(7, 7, 7)
-                .addComponent(lblRentals)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(lblRentals))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(tbpGamesMembers, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
         );
@@ -270,15 +299,15 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             }
         });
 
-        btnLogout.setBackground(new java.awt.Color(102, 102, 102));
-        btnLogout.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnLogout.setForeground(new java.awt.Color(204, 204, 204));
-        btnLogout.setText("Logout");
-        btnLogout.setBorder(null);
-        btnLogout.setBorderPainted(false);
-        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+        btnExit.setBackground(new java.awt.Color(102, 102, 102));
+        btnExit.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnExit.setForeground(new java.awt.Color(204, 204, 204));
+        btnExit.setText("Exit");
+        btnExit.setBorder(null);
+        btnExit.setBorderPainted(false);
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogoutActionPerformed(evt);
+                btnExitActionPerformed(evt);
             }
         });
 
@@ -317,7 +346,7 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbtnMembers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbtnVideoGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnManageGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnManageEmployees, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(17, Short.MAX_VALUE))
@@ -338,7 +367,7 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
                 .addGap(27, 27, 27)
                 .addComponent(btnManageEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66))
         );
 
@@ -423,20 +452,32 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         System.exit(0);
     }//GEN-LAST:event_btnManageMembersActionPerformed
 
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLogoutActionPerformed
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        try {
+            model.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+        System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnManageGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageGamesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnManageGamesActionPerformed
 
     private void btnManageEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageEmployeesActionPerformed
-        // TODO add your handling code here:
+        ManageEmployeesDialog med = new ManageEmployeesDialog(this, model);
+        med.setVisible(true);
+        
     }//GEN-LAST:event_btnManageEmployeesActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnManageEmployees;
     private javax.swing.JButton btnManageGames;
@@ -463,4 +504,5 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
     public void tableChanged(TableModelEvent arg0) {
 
     }
+
 }

@@ -289,7 +289,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField tfUserName;
     // End of variables declaration//GEN-END:variables
 
-    public String getMd5(char[] pass) {
+    public static String getMd5(char[] pass) {
         try {
 
             String input = String.valueOf(pass);
