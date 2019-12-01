@@ -17,6 +17,8 @@ public class DbModel {
 
     Connection conn;
 
+    private PreparedStatement authLoginPstmt;
+    
     private PreparedStatement getAllEmployeesPstmt;
     private PreparedStatement addEmployeePstmt;
     private PreparedStatement deleteEmployeePstmt;
@@ -34,6 +36,8 @@ public class DbModel {
     public DbModel(Connection conn) throws SQLException {
         this.conn = conn;
 
+        authLoginPstmt = conn.prepareStatement("SELECT * FROM employees WHERE username=? AND password=?");
+        
         getAllEmployeesPstmt = conn.prepareStatement("SELECT * FROM employees ORDER BY name ASC");
         addEmployeePstmt = conn.prepareStatement("INSERT INTO employees (name,username,password) VALUES (?,?,?)");
         deleteEmployeePstmt = conn.prepareStatement("DELETE FROM employee WHERE id=?");
@@ -47,6 +51,19 @@ public class DbModel {
 
       }
 
+    
+    public Employee authLogin (String user, String pass) throws SQLException{
+        authLoginPstmt.setString(1, user);
+        authLoginPstmt.setString(2, pass);
+        
+        Employee employee = null;
+        ResultSet rs = authLoginPstmt.executeQuery();
+        while (rs.next()){
+            employee = new Employee(rs.getString("name"), rs.getString("username"), rs.getString("password"));
+        }
+        return employee;
+    }
+        
     public List<Employee> getAllEmployees() throws SQLException {
         List<Employee> employees = new ArrayList<>();
         ResultSet rs = getAllEmployeesPstmt.executeQuery();
