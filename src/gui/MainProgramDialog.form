@@ -219,7 +219,7 @@
                             <Column editable="true" title="Name" type="java.lang.String"/>
                             <Column editable="true" title="Genre" type="java.lang.String"/>
                             <Column editable="true" title="Platform" type="java.lang.String"/>
-                            <Column editable="false" title="In Stock" type="java.lang.Boolean"/>
+                            <Column editable="false" title="In the store" type="java.lang.Boolean"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

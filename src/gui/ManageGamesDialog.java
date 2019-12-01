@@ -1,23 +1,37 @@
 package gui;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import model.DbModel;
+import model.Game;
 
 /**
  *
  * @author GAJDA NORBERT
  */
-public class ManageGamesDialog extends javax.swing.JDialog {
+public class ManageGamesDialog extends javax.swing.JDialog implements TableModelListener {
 
     DbModel model;
-    
+    List<Game> games;
+    DefaultTableModel dtm;
+
     public ManageGamesDialog(java.awt.Dialog parent, DbModel model) {
         super(parent, true);
         initComponents();
         setTitle("Manage Games");
         setLocationRelativeTo(parent);
-        
-             
+
         this.model = model;
+        dtm = (DefaultTableModel) tblGames.getModel();
+        rbIn.setSelected(true);
+        refreshTable();
+        
     }
 
     /**
@@ -33,12 +47,14 @@ public class ManageGamesDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblGames = new javax.swing.JTable();
-        cbMembers = new javax.swing.JComboBox<>();
-        btnRent = new javax.swing.JButton();
-        tfSearch = new javax.swing.JTextField();
+        tfSearchGame = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         rbIn = new javax.swing.JRadioButton();
         rbOut = new javax.swing.JRadioButton();
+        btnRent = new javax.swing.JButton();
+        btnAddGame = new javax.swing.JButton();
+        btnOk = new javax.swing.JButton();
+        btnDeleteGames1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,27 +93,9 @@ public class ManageGamesDialog extends javax.swing.JDialog {
         tblGames.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jScrollPane1.setViewportView(tblGames);
 
-        cbMembers.setBackground(new java.awt.Color(51, 51, 51));
-        cbMembers.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        cbMembers.setForeground(new java.awt.Color(204, 204, 204));
-        cbMembers.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbMembers.setBorder(null);
-
-        btnRent.setBackground(new java.awt.Color(102, 102, 102));
-        btnRent.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnRent.setForeground(new java.awt.Color(204, 204, 204));
-        btnRent.setText("Rent");
-        btnRent.setBorder(null);
-        btnRent.setBorderPainted(false);
-        btnRent.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRentActionPerformed(evt);
-            }
-        });
-
-        tfSearch.setBackground(new java.awt.Color(102, 102, 102));
-        tfSearch.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        tfSearch.setForeground(new java.awt.Color(204, 204, 204));
+        tfSearchGame.setBackground(new java.awt.Color(102, 102, 102));
+        tfSearchGame.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        tfSearchGame.setForeground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 204, 204));
@@ -115,50 +113,104 @@ public class ManageGamesDialog extends javax.swing.JDialog {
         rbOut.setForeground(new java.awt.Color(204, 204, 204));
         rbOut.setText("Out of Store");
 
+        btnRent.setBackground(new java.awt.Color(102, 102, 102));
+        btnRent.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnRent.setForeground(new java.awt.Color(204, 204, 204));
+        btnRent.setText("Rent");
+        btnRent.setBorder(null);
+        btnRent.setBorderPainted(false);
+        btnRent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRentActionPerformed(evt);
+            }
+        });
+
+        btnAddGame.setBackground(new java.awt.Color(102, 102, 102));
+        btnAddGame.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnAddGame.setForeground(new java.awt.Color(204, 204, 204));
+        btnAddGame.setText("Add Game");
+        btnAddGame.setBorder(null);
+        btnAddGame.setBorderPainted(false);
+        btnAddGame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddGameActionPerformed(evt);
+            }
+        });
+
+        btnOk.setBackground(new java.awt.Color(102, 102, 102));
+        btnOk.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnOk.setForeground(new java.awt.Color(204, 204, 204));
+        btnOk.setText("OK");
+        btnOk.setBorder(null);
+        btnOk.setBorderPainted(false);
+        btnOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOkActionPerformed(evt);
+            }
+        });
+
+        btnDeleteGames1.setBackground(new java.awt.Color(102, 102, 102));
+        btnDeleteGames1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnDeleteGames1.setForeground(new java.awt.Color(204, 204, 204));
+        btnDeleteGames1.setText("Delete Games");
+        btnDeleteGames1.setBorder(null);
+        btnDeleteGames1.setBorderPainted(false);
+        btnDeleteGames1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteGames1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(176, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cbMembers, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAddGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnOk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDeleteGames1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnRent, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(rbIn)
-                        .addGap(18, 18, 18)
+                        .addGap(39, 39, 39)
                         .addComponent(rbOut)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(32, 32, 32)
                         .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfSearchGame, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(42, 42, 42))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbIn)
-                            .addComponent(rbOut)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbIn)
+                    .addComponent(rbOut)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfSearchGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cbMembers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRent, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAddGame, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeleteGames1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRent, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAddGame, btnOk, btnRent});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -168,28 +220,75 @@ public class ManageGamesDialog extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentActionPerformed
-
-
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnRentActionPerformed
+
+    private void btnAddGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddGameActionPerformed
+
+    }//GEN-LAST:event_btnAddGameActionPerformed
+
+    private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnOkActionPerformed
+
+    private void btnDeleteGames1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteGames1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteGames1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddGame;
+    private javax.swing.JButton btnDeleteGames1;
+    private javax.swing.JButton btnOk;
     private javax.swing.JButton btnRent;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> cbMembers;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rbIn;
     private javax.swing.JRadioButton rbOut;
     private javax.swing.JTable tblGames;
-    private javax.swing.JTextField tfSearch;
+    private javax.swing.JTextField tfSearchGame;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void tableChanged(TableModelEvent arg0) {
+    }
+
+    private void refreshTable() {
+        try {
+            Map<Integer, String> membersMap = model.getMapMembers();
+            games = model.getAllVideoGames();
+
+            dtm.getDataVector().clear();
+            dtm.fireTableDataChanged();
+
+            for (Game game : games) {
+                
+                Vector row = new Vector();
+                
+                row.add(game.getName());
+                row.add(game.getGenre());
+                row.add(game.getPlatform());
+                if (game.getMembers_id() == 0) {
+                    row.add("in the store");
+                } else {
+                    //needs to check if it is a deleted member!
+                    row.add(membersMap.get(game.getMembers_id()));
+                }
+                dtm.addRow(row);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }

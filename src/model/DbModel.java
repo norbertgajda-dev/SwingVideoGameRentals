@@ -135,8 +135,7 @@ public class DbModel {
         return deleteMemberPstmt.executeUpdate();
     }
     
-    
-    
+        
     public List<Game> getAllVideoGames() throws SQLException{
         List<Game> games = new ArrayList<>();
         ResultSet rs = getAllGamesPstmt.executeQuery();
@@ -153,6 +152,16 @@ public class DbModel {
         }
         rs.close();
         return games;
+    }
+    
+    public Map<Integer, String> getMapMembers() throws SQLException{
+        List<Member> Members = getAllMembers();
+        Map<Integer, String> mapMembers = new HashMap<>();
+        
+        for (Member member : Members) {
+            mapMembers.put(member.getId(), member.getName());
+        }
+        return mapMembers;
     }
     
     

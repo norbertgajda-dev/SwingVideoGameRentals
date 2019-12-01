@@ -117,7 +117,7 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
             },
             new String [] {
-                "Name", "Genre", "Platform", "In Stock"
+                "Name", "Genre", "Platform", "In the store"
             }
         ) {
             Class[] types = new Class [] {
