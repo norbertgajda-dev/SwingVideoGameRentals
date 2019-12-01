@@ -40,11 +40,11 @@ public class DbModel {
         
         getAllEmployeesPstmt = conn.prepareStatement("SELECT * FROM employees ORDER BY name ASC");
         addEmployeePstmt = conn.prepareStatement("INSERT INTO employees (name,username,password) VALUES (?,?,?)");
-        deleteEmployeePstmt = conn.prepareStatement("DELETE FROM employee WHERE id=?");
+        deleteEmployeePstmt = conn.prepareStatement("DELETE FROM employees WHERE id=?");
         
         getAllMembersPstmt = conn.prepareStatement("SELECT * FROM members WHERE id>? ORDER BY name ASC");
-        addMemberPstmt = conn.prepareStatement ("INSERT INTO members (name,email) VALUES (?,?)");
-        updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?");
+        addMemberPstmt = conn.prepareStatement ("INSERT INTO members (name,email, phone) VALUES (?,?,?)");
+        updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?, phone=?");
         deleteMemberPstmt = conn.prepareStatement("DELETE FROM members WHERE id=?");
         
         getAllGamesPstmt = conn.prepareStatement("SELECT * FROM games ORDER BY name ASC");
@@ -119,6 +119,20 @@ public class DbModel {
             ));
         }
         return members;
+    }
+    
+    public int addMember (Member member) throws SQLException{
+        addMemberPstmt.setString(1, member.getName());
+        addMemberPstmt.setString(2, member.getEmail());
+        addMemberPstmt.setString(3, member.getPhone());
+        
+        return addMemberPstmt.executeUpdate();
+    }
+    
+    public int deleteMember(Member member) throws SQLException {
+        deleteMemberPstmt.setInt(1, member.getId());
+        
+        return deleteMemberPstmt.executeUpdate();
     }
     
     

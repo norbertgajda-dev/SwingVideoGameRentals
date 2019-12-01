@@ -153,7 +153,7 @@ public class ManageEmployeesDialog extends javax.swing.JDialog {
                                 .addComponent(jLabel3)
                                 .addGap(21, 21, 21)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfUser, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                            .addComponent(tfUser, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                             .addComponent(tfPass)
                             .addComponent(tfName))))
                 .addGap(54, 54, 54))
@@ -201,7 +201,9 @@ public class ManageEmployeesDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,15 +222,31 @@ public class ManageEmployeesDialog extends javax.swing.JDialog {
         Employee e = new Employee(tfName.getText(), tfUser.getText(), pass);
         try {
             model.addEmployee(e);
+            refreshList();
+            tfName.setText("");
+            tfUser.setText("");
+            tfPass.setText("");
+            JOptionPane.showMessageDialog(rootPane, "New employee was successfully added!", "Success!", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database Error!", JOptionPane.ERROR_MESSAGE);
         }
-        refreshList();
-
     }//GEN-LAST:event_btnAddEmployeeActionPerformed
 
     private void btnDeleteEmployee1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEmployee1ActionPerformed
-        // TODO add your handling code here:
+        Employee selectedE = (Employee) lstEmployees.getSelectedValue();
+
+        if (selectedE != null) {
+            try {
+                model.deleteEmployee(selectedE);
+                employees.remove(selectedE);
+                refreshList();
+                JOptionPane.showMessageDialog(rootPane, "The selected item was successfully deleted!", "Delete success!", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Please select an employee to delete!", "There is no selected item!", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnDeleteEmployee1ActionPerformed
 
 

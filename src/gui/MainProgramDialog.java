@@ -34,13 +34,8 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
         lblWelcome.setText(username);
 
-        try {
-            games = model.getAllVideoGames();
-            members = model.getAllMembers();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Adatbázis hiba", JOptionPane.ERROR_MESSAGE);
-        }
-
+        refreshTable();
+        
         //getting table model, and add listener for the later modifications in the table
         dtmGames = (DefaultTableModel) tblGames.getModel();
         dtmGames.addTableModelListener(this);
@@ -442,14 +437,13 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         } else
             tbtnMembersActionPerformed(null);
     }//GEN-LAST:event_tbpGamesMembersMouseReleased
-
+       
     private void btnManageMembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageMembersActionPerformed
-        try {
-            model.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
-        }
-        System.exit(0);
+        ManageMembersDialog mmd = new ManageMembersDialog(this, model);
+        mmd.setVisible(true);
+        refreshTable();
+        tbpGamesMembersMouseReleased(null);
+        
     }//GEN-LAST:event_btnManageMembersActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -462,13 +456,16 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnManageGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageGamesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnManageGamesActionPerformed
+        ManageGamesDialog mgd = new ManageGamesDialog (this, model);
+        mgd.setVisible(true);
+        refreshTable();
+        tbpGamesMembersMouseReleased(null);    }//GEN-LAST:event_btnManageGamesActionPerformed
 
     private void btnManageEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageEmployeesActionPerformed
         ManageEmployeesDialog med = new ManageEmployeesDialog(this, model);
         med.setVisible(true);
-        
+        refreshTable();
+        tbpGamesMembersMouseReleased(null);
     }//GEN-LAST:event_btnManageEmployeesActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -503,6 +500,15 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
     @Override
     public void tableChanged(TableModelEvent arg0) {
 
+    }
+
+    private void refreshTable() {
+        try {
+            games = model.getAllVideoGames();
+            members = model.getAllMembers();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Adatbázis hiba", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }

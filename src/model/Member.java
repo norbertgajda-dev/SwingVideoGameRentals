@@ -29,6 +29,11 @@ public class Member implements Serializable{
         this.phone = phone;
     }
 
+    @Override
+    public String toString() {
+        return name + ", email: " + email + " (" + phone + ')';
+    }
+
     public String getPhone() {
         return phone;
     }
