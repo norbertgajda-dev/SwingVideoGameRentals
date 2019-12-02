@@ -2,6 +2,9 @@ package gui;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.DbModel;
 import model.Game;
@@ -16,6 +19,7 @@ public class RentDialog extends javax.swing.JDialog {
     DbModel model;
     Game game;
     List<Member> members;
+    Map<Integer, Member> membersMap;
 
     public RentDialog(java.awt.Dialog parent, DbModel model, Game game) {
         super(parent, true);
@@ -26,11 +30,14 @@ public class RentDialog extends javax.swing.JDialog {
         this.model = model;
         this.game = game;
         lblSelected.setText(game.getName());
-        
+
         try {
             members = model.getAllMembers();
+            membersMap = model.getMapMembers();
             lstMembers.setListData(members.toArray());
-         //   lstMembers.setSelectedValue(m, rootPaneCheckingEnabled);
+
+            setSelectedValue();
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
         }
@@ -88,6 +95,11 @@ public class RentDialog extends javax.swing.JDialog {
         lstMembers.setBackground(new java.awt.Color(102, 102, 102));
         lstMembers.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lstMembers.setForeground(new java.awt.Color(204, 204, 204));
+        lstMembers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lstMembersMousePressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(lstMembers);
 
         btnOK.setBackground(new java.awt.Color(102, 102, 102));
@@ -105,6 +117,11 @@ public class RentDialog extends javax.swing.JDialog {
         lstGames.setBackground(new java.awt.Color(102, 102, 102));
         lstGames.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lstGames.setForeground(new java.awt.Color(204, 204, 204));
+        lstGames.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lstGamesMousePressed(evt);
+            }
+        });
         jScrollPane3.setViewportView(lstGames);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -180,8 +197,22 @@ public class RentDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void btnRent1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRent1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnRent1ActionPerformed
+
+    private void lstGamesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstGamesMousePressed
+
+    }//GEN-LAST:event_lstGamesMousePressed
+
+    private void lstMembersMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstMembersMousePressed
+        Member member = (Member) lstMembers.getSelectedValue();
+        try {
+            List<Game> memberGames = model.getMemberGames(member);
+            lstGames.setListData(memberGames.toArray());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_lstMembersMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -197,4 +228,15 @@ public class RentDialog extends javax.swing.JDialog {
     private javax.swing.JList lstMembers;
     private javax.swing.JTextField tfSearchMember;
     // End of variables declaration//GEN-END:variables
+
+    private void setSelectedValue() {
+        int indexOfSelectedValue = -1;
+        for (int i = 0; i < members.size(); i++) {
+            if (members.get(i).getName().equals(membersMap.get(game.getMembers_id()).getName())) {
+                indexOfSelectedValue = i;
+            }
+        }
+        lstMembers.setSelectedValue(members.get(indexOfSelectedValue), true);
+        lstMembersMousePressed(null);
+    }
 }

@@ -35,6 +35,13 @@ public class Game implements Serializable{
         this.rental_date = rental_date;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+    
+    
+
     public String getRental_date() {
         return rental_date;
     }

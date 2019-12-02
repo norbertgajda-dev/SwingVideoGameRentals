@@ -27,6 +27,8 @@ public class DbModel {
     private PreparedStatement addMemberPstmt;
     private PreparedStatement updateMemberPstmt;
     private PreparedStatement deleteMemberPstmt;
+    
+    private PreparedStatement getMemberGamesPstmt;
 
     private PreparedStatement getAllGamesPstmt;
     private PreparedStatement addGamePstmt;
@@ -46,6 +48,8 @@ public class DbModel {
         addMemberPstmt = conn.prepareStatement("INSERT INTO members (name,email, phone) VALUES (?,?,?)");
         updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?, phone=? WEHERE id=?");
         deleteMemberPstmt = conn.prepareStatement("DELETE FROM members WHERE id=?");
+        
+        getMemberGamesPstmt = conn.prepareStatement("SELECT * FROM games WHERE members_id=?");
 
         getAllGamesPstmt = conn.prepareStatement("SELECT * FROM games ORDER BY name ASC");
         addGamePstmt = conn.prepareStatement("INSERT INTO games (name, platform, genre, members_id, rental_date) VALUES (?,?,?,?,?)");
@@ -122,12 +126,12 @@ public class DbModel {
         return members;
     }
 
-    public Map<Integer, String> getMapMembers() throws SQLException {
+    public Map<Integer, Member> getMapMembers() throws SQLException {
         List<Member> Members = getAllMembers();
-        Map<Integer, String> mapMembers = new HashMap<>();
+        Map<Integer, Member> mapMembers = new HashMap<>();
 
         for (Member member : Members) {
-            mapMembers.put(member.getId(), member.getName());
+            mapMembers.put(member.getId(), member);
         }
         return mapMembers;
     }
@@ -144,6 +148,25 @@ public class DbModel {
         deleteMemberPstmt.setInt(1, member.getId());
 
         return deleteMemberPstmt.executeUpdate();
+    }
+    
+    public List<Game> getMemberGames (Member member) throws SQLException{
+        getMemberGamesPstmt.setInt(1, member.getId());
+        
+        List<Game> membersGames = new ArrayList<>();
+        ResultSet rs = getMemberGamesPstmt.executeQuery();
+        while (rs.next()){
+            membersGames.add(new Game(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("genre"),
+                    rs.getString("platform"),
+                    rs.getInt("members_id"),
+                    rs.getString("rental_date")
+            ));
+        }
+        
+        return membersGames;
     }
 
     public List<Game> getAllVideoGames() throws SQLException {

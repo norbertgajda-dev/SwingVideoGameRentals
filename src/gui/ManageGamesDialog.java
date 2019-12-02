@@ -12,6 +12,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import model.DbModel;
 import model.Game;
+import model.Member;
 
 /**
  *
@@ -385,7 +386,7 @@ public class ManageGamesDialog extends javax.swing.JDialog implements TableModel
 
     private void refreshTable() {
         try {
-            Map<Integer, String> membersMap = model.getMapMembers();
+            Map<Integer, Member> membersMap = model.getMapMembers();
 
             games = model.getAllVideoGames();
 
@@ -405,7 +406,7 @@ public class ManageGamesDialog extends javax.swing.JDialog implements TableModel
                         row.add("in the store");
                     } else {
                         //needs to check if it is a deleted member!
-                        row.add(membersMap.get(game.getMembers_id()));
+                        row.add(membersMap.get(game.getMembers_id()).getName());
                     }
                     dtm.addRow(row);
                 }
