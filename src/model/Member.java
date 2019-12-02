@@ -31,7 +31,7 @@ public class Member implements Serializable{
 
     @Override
     public String toString() {
-        return name + ", email: " + email + " (" + phone + ')';
+        return name;
     }
 
     public String getPhone() {

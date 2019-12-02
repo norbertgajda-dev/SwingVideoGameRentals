@@ -281,7 +281,8 @@ public class ManageGamesDialog extends javax.swing.JDialog implements TableModel
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageRentActionPerformed
-        // TODO add your handling code here:
+        RentDialog rd = new RentDialog(this, model, games.get(tblGames.getSelectedRow()));
+        rd.setVisible(true);
     }//GEN-LAST:event_btnManageRentActionPerformed
 
     private void btnAddGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddGameActionPerformed
