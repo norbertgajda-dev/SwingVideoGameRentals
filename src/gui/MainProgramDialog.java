@@ -16,7 +16,7 @@ import model.Member;
  *
  * @author GAJDA NORBERT
  */
-public class MainProgramDialog extends javax.swing.JDialog implements TableModelListener {
+public class MainProgramDialog extends javax.swing.JDialog {
 
     DbModel model;
     DefaultTableModel dtmGames;
@@ -36,11 +36,9 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
         refreshTable();
         
-        //getting table model, and add listener for the later modifications in the table
+        //getting table model
         dtmGames = (DefaultTableModel) tblGames.getModel();
-        dtmGames.addTableModelListener(this);
         dtmMembers = (DefaultTableModel) tblMembers.getModel();
-        dtmMembers.addTableModelListener(this);
 
         //default view will always be the Games table
         tbtnVideoGamesActionPerformed(null);
@@ -117,14 +115,14 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
             },
             new String [] {
-                "Name", "Genre", "Platform", "In the store"
+                "Name", "Genre", "Platform", "In "
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -137,11 +135,15 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         });
         tblGames.setFillsViewportHeight(true);
         tblGames.setGridColor(new java.awt.Color(102, 102, 102));
+        tblGames.setRowHeight(18);
         tblGames.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tblGames.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jScrollPane1.setViewportView(tblGames);
         if (tblGames.getColumnModel().getColumnCount() > 0) {
-            tblGames.getColumnModel().getColumn(3).setHeaderValue("In ");
+            tblGames.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblGames.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tblGames.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tblGames.getColumnModel().getColumn(3).setPreferredWidth(50);
         }
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -175,13 +177,21 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tblMembers.setFillsViewportHeight(true);
         tblMembers.setGridColor(new java.awt.Color(102, 102, 102));
+        tblMembers.setRowHeight(18);
         tblMembers.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tblMembers.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jScrollPane2.setViewportView(tblMembers);
@@ -496,11 +506,6 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
     private javax.swing.JToggleButton tbtnMembers;
     private javax.swing.JToggleButton tbtnVideoGames;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void tableChanged(TableModelEvent arg0) {
-
-    }
 
     private void refreshTable() {
         try {

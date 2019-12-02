@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.DbModel;
 import model.Employee;
@@ -225,6 +223,10 @@ public class Login extends javax.swing.JFrame {
             MainProgramDialog mpd = new MainProgramDialog(this, model, tfUserName.getText());
             mpd.setVisible(true);
             setVisible(true);
+            tfUserName.setText("");
+            tfUserName.requestFocus();
+            tfPassword.setText("");
+            
         } else {
             JOptionPane.showMessageDialog(rootPane, "Wrong Username or password!", "WRONG DATA!", JOptionPane.WARNING_MESSAGE);
 
