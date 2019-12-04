@@ -14,8 +14,8 @@ import model.Member;
  */
 public class ManageMembersDialog extends javax.swing.JDialog {
 
-    DbModel model;
-    List<Member> members;
+    private DbModel model;
+    private List<Member> members;
 
     public ManageMembersDialog(java.awt.Dialog parent, DbModel model) {
         super(parent, true);

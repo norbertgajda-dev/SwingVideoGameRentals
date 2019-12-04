@@ -1,6 +1,10 @@
 package gui;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -16,10 +20,10 @@ import model.Member;
  */
 public class RentDialog extends javax.swing.JDialog {
 
-    DbModel model;
-    Game game;
-    List<Member> members;
-    Map<Integer, Member> membersMap;
+    private DbModel model;
+    private Game game;
+    private List<Member> members;
+    private Map<Integer, Member> membersMap;
 
     public RentDialog(java.awt.Dialog parent, DbModel model, Game game) {
         super(parent, true);
@@ -48,7 +52,7 @@ public class RentDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        btnRent1 = new javax.swing.JButton();
+        btnRent = new javax.swing.JButton();
         lblSelected = new javax.swing.JLabel();
         tfSearchMember = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -63,15 +67,15 @@ public class RentDialog extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
-        btnRent1.setBackground(new java.awt.Color(102, 102, 102));
-        btnRent1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnRent1.setForeground(new java.awt.Color(204, 204, 204));
-        btnRent1.setText("Rent");
-        btnRent1.setBorder(null);
-        btnRent1.setBorderPainted(false);
-        btnRent1.addActionListener(new java.awt.event.ActionListener() {
+        btnRent.setBackground(new java.awt.Color(102, 102, 102));
+        btnRent.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnRent.setForeground(new java.awt.Color(204, 204, 204));
+        btnRent.setText("Rent");
+        btnRent.setBorder(null);
+        btnRent.setBorderPainted(false);
+        btnRent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRent1ActionPerformed(evt);
+                btnRentActionPerformed(evt);
             }
         });
 
@@ -83,6 +87,11 @@ public class RentDialog extends javax.swing.JDialog {
         tfSearchMember.setBackground(new java.awt.Color(102, 102, 102));
         tfSearchMember.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         tfSearchMember.setForeground(new java.awt.Color(204, 204, 204));
+        tfSearchMember.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfSearchMemberKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 204, 204));
@@ -117,11 +126,6 @@ public class RentDialog extends javax.swing.JDialog {
         lstGames.setBackground(new java.awt.Color(102, 102, 102));
         lstGames.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lstGames.setForeground(new java.awt.Color(204, 204, 204));
-        lstGames.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                lstGamesMousePressed(evt);
-            }
-        });
         jScrollPane3.setViewportView(lstGames);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -133,7 +137,7 @@ public class RentDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnRent1, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                            .addComponent(btnRent, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                             .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -172,7 +176,7 @@ public class RentDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnRent1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRent, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(261, 261, 261)
                         .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(36, Short.MAX_VALUE))
@@ -196,28 +200,86 @@ public class RentDialog extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_btnOKActionPerformed
 
-    private void btnRent1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRent1ActionPerformed
+    private void btnRentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentActionPerformed
+        if (btnRent.getText().equals("Rent")) {
 
-    }//GEN-LAST:event_btnRent1ActionPerformed
+            long ms = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(ms);
 
-    private void lstGamesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstGamesMousePressed
+            Member m = (Member) lstMembers.getSelectedValue();
+            System.out.println(game.getName());
+            game.setMembers_id(m.getId());
+            game.setRental_date(date.toString());
+            btnRent.setEnabled(false);
+            try {
+                model.updateGames(game);
+                lstMembersMousePressed(null);
+                JOptionPane.showMessageDialog(rootPane, game.getName() + " was successfully rented!", "Successful rent!", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
 
-    }//GEN-LAST:event_lstGamesMousePressed
+        } else {
+
+            long ms = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(ms);
+
+            //parse String Date to Date format
+            String dbDate = game.getRental_date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date parseDate;
+            java.sql.Date rentedDate;
+            try {
+                parseDate = sdf.parse(dbDate);
+                rentedDate = new java.sql.Date(parseDate.getTime());
+                long days = (date.getTime() - rentedDate.getTime()) / 1000 / 60 / 60 / 24;
+
+                if (days <= 3) {
+                    JOptionPane.showMessageDialog(rootPane, "Returned in " + days + " days! You dont have to pay overdue fine!", "Thank You!", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Returned in " + days + " days! You have to pay " + overdueFine(days) + " euro(s) overdue fine!", "Thank You!", JOptionPane.INFORMATION_MESSAGE);
+                }
+                game.setMembers_id(0);
+                model.updateGames(game);
+                lstMembersMousePressed(null);
+                btnRent.setEnabled(false);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.toString(), "Something went wrong with the date parsing", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnRentActionPerformed
 
     private void lstMembersMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstMembersMousePressed
         Member member = (Member) lstMembers.getSelectedValue();
         try {
             List<Game> memberGames = model.getMemberGames(member);
-            lstGames.setListData(memberGames.toArray());
+            if (memberGames != null) {
+                lstGames.setListData(memberGames.toArray());
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_lstMembersMousePressed
 
+    private void tfSearchMemberKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSearchMemberKeyReleased
+        String searchString = tfSearchMember.getText();
+        List<Member> sMember = new ArrayList<>();
+        for (Member member : members) {
+            if (member.getName().contains(searchString)) {
+                sMember.add(member);
+            }
+        }
+        if (!sMember.isEmpty()) {
+            lstMembers.setListData(sMember.toArray());
+        }
+    }//GEN-LAST:event_tfSearchMemberKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOK;
-    private javax.swing.JButton btnRent1;
+    private javax.swing.JButton btnRent;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -231,12 +293,28 @@ public class RentDialog extends javax.swing.JDialog {
 
     private void setSelectedValue() {
         int indexOfSelectedValue = -1;
-        for (int i = 0; i < members.size(); i++) {
-            if (members.get(i).getName().equals(membersMap.get(game.getMembers_id()).getName())) {
-                indexOfSelectedValue = i;
+        if (game.getMembers_id() != 0) {
+            btnRent.setText("Return");
+            for (int i = 0; i < members.size(); i++) {
+                if (members.get(i).getName().equals(membersMap.get(game.getMembers_id()).getName())) {
+                    indexOfSelectedValue = i;
+                }
             }
+            lstMembers.setSelectedValue(members.get(indexOfSelectedValue), true);
+            lstMembersMousePressed(null);
+        } else {
+            btnRent.setText("Rent");
+            lstMembers.setSelectedIndex(0);
+            lstMembersMousePressed(null);
         }
-        lstMembers.setSelectedValue(members.get(indexOfSelectedValue), true);
-        lstMembersMousePressed(null);
     }
+
+    private long overdueFine(long days) {
+        long fee = 0;
+        if (days > 3) {
+            fee = (days - 3) * 2;
+        }
+        return fee;
+    }
+
 }

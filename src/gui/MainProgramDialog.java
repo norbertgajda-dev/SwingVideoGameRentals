@@ -18,11 +18,11 @@ import model.Member;
  */
 public class MainProgramDialog extends javax.swing.JDialog {
 
-    DbModel model;
-    DefaultTableModel dtmGames;
-    DefaultTableModel dtmMembers;
-    List<Game> games;
-    List<Member> members;
+    private DbModel model;
+    private DefaultTableModel dtmGames;
+    private DefaultTableModel dtmMembers;
+    private List<Game> games;
+    private List<Member> members;
 
     public MainProgramDialog(java.awt.Frame parent, DbModel model, String username) {
         super(parent, true);

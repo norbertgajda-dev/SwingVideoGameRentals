@@ -17,9 +17,9 @@ import model.Employee;
  */
 public class Login extends javax.swing.JFrame {
 
-    Map<String, String> employees;
-    DbModel model;
-    String username;
+    private Map<String, String> employees;
+    private DbModel model;
+    private String username;
 
     public Login() {
         initComponents();

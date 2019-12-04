@@ -14,8 +14,8 @@ import model.Employee;
  */
 public class ManageEmployeesDialog extends javax.swing.JDialog {
 
-    DbModel model;
-    List<Employee> employees;
+    private DbModel model;
+    private List<Employee> employees;
 
     public ManageEmployeesDialog(java.awt.Dialog parent, DbModel model) {
         super(parent, true);
