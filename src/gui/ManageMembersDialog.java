@@ -25,8 +25,6 @@ public class ManageMembersDialog extends javax.swing.JDialog {
 
         this.model = model;
         refreshList();
-        
-        
 
     }
 
@@ -52,6 +50,11 @@ public class ManageMembersDialog extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
         jPanel1.setForeground(new java.awt.Color(204, 204, 204));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
 
         lstMembers.setBackground(new java.awt.Color(102, 102, 102));
         lstMembers.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -60,6 +63,11 @@ public class ManageMembersDialog extends javax.swing.JDialog {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        lstMembers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstMembersMouseClicked(evt);
+            }
         });
         jScrollPane1.setViewportView(lstMembers);
 
@@ -150,7 +158,7 @@ public class ManageMembersDialog extends javax.swing.JDialog {
                             .addComponent(jLabel2))
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                            .addComponent(tfEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
                             .addComponent(tfPhone)
                             .addComponent(tfName))))
                 .addGap(54, 54, 54))
@@ -179,7 +187,7 @@ public class ManageMembersDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(18, Short.MAX_VALUE))
+                        .addContainerGap(41, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnDeleteMember, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -211,18 +219,32 @@ public class ManageMembersDialog extends javax.swing.JDialog {
 
     private void btnAddMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMemberActionPerformed
 
-        Member e = new Member(tfName.getText(), tfEmail.getText(), tfPhone.getText());
-        try {
-            model.addMember(e);
-            refreshList();
-            tfName.setText("");
-            tfEmail.setText("");
-            tfPhone.setText("");
-            JOptionPane.showMessageDialog(rootPane, "New member was successfully added!", "Success!", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database Error!", JOptionPane.ERROR_MESSAGE);
+        if (btnAddMember.getText().equals("Add Member")) {
+            Member e = new Member(tfName.getText(), tfEmail.getText(), tfPhone.getText());
+            try {
+                model.addMember(e);
+                refreshList();
+                tfName.setText("");
+                tfEmail.setText("");
+                tfPhone.setText("");
+                JOptionPane.showMessageDialog(rootPane, e.getName() + " was successfully added!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            Member m = (Member) lstMembers.getSelectedValue();
+            m.setName(tfName.getText());
+            m.setEmail(tfEmail.getText());
+            m.setPhone(tfPhone.getText());
+            try {
+                model.updateMember(m);
+                refreshList();
+                JOptionPane.showMessageDialog(rootPane, m.getName() + " was successfully updated!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database Error!", JOptionPane.ERROR_MESSAGE);
+            }
         }
-       
+
     }//GEN-LAST:event_btnAddMemberActionPerformed
 
     private void btnDeleteMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteMemberActionPerformed
@@ -241,6 +263,23 @@ public class ManageMembersDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Please select a member to delete!", "There is no selected item!", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnDeleteMemberActionPerformed
+
+    private void lstMembersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstMembersMouseClicked
+        Member m = (Member) lstMembers.getSelectedValue();
+        btnAddMember.setText("Update Member");
+        tfName.setText(m.getName());
+        tfEmail.setText(m.getEmail());
+        tfPhone.setText(m.getPhone());
+
+    }//GEN-LAST:event_lstMembersMouseClicked
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        btnAddMember.setText("Add Member");
+        lstMembers.clearSelection();
+        tfName.setText("");
+        tfEmail.setText("");
+        tfPhone.setText("");
+    }//GEN-LAST:event_jPanel1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

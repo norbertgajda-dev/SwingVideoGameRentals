@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.DbModel;
 import model.Game;
@@ -39,7 +37,6 @@ public class RentDialog extends javax.swing.JDialog {
             members = model.getAllMembers();
             membersMap = model.getMapMembers();
             lstMembers.setListData(members.toArray());
-
             setSelectedValue();
 
         } catch (SQLException ex) {
@@ -207,14 +204,13 @@ public class RentDialog extends javax.swing.JDialog {
             java.sql.Date date = new java.sql.Date(ms);
 
             Member m = (Member) lstMembers.getSelectedValue();
-            System.out.println(game.getName());
             game.setMembers_id(m.getId());
             game.setRental_date(date.toString());
             btnRent.setEnabled(false);
             try {
                 model.updateGames(game);
                 lstMembersMousePressed(null);
-                JOptionPane.showMessageDialog(rootPane, game.getName() + " was successfully rented!", "Successful rent!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(rootPane, game.getName() + " was successfully rented! The fee is 3 euro!", "Successful rent!", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
             }
@@ -271,8 +267,12 @@ public class RentDialog extends javax.swing.JDialog {
                 sMember.add(member);
             }
         }
-        if (!sMember.isEmpty()) {
+        if (sMember!= null) {
             lstMembers.setListData(sMember.toArray());
+        } else {
+            members.add(new Member("-", "-", "-"));
+            lstMembers.setListData(sMember.toArray());
+
         }
     }//GEN-LAST:event_tfSearchMemberKeyReleased
 

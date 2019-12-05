@@ -43,7 +43,7 @@ public class MainProgramDialog extends javax.swing.JDialog {
         //default view will always be the Games table
         tbtnVideoGamesActionPerformed(null);
 
-        //for the tabs UI elements to be simple
+        //for the tabs UI elements to be simple black
         tbpGamesMembers.setUI(new BasicTabbedPaneUI());
 
     }

@@ -27,7 +27,7 @@ public class DbModel {
     private PreparedStatement addMemberPstmt;
     private PreparedStatement updateMemberPstmt;
     private PreparedStatement deleteMemberPstmt;
-    
+
     private PreparedStatement getMemberGamesPstmt;
 
     private PreparedStatement getAllGamesPstmt;
@@ -46,9 +46,9 @@ public class DbModel {
 
         getAllMembersPstmt = conn.prepareStatement("SELECT * FROM members WHERE id>? ORDER BY name ASC");
         addMemberPstmt = conn.prepareStatement("INSERT INTO members (name,email, phone) VALUES (?,?,?)");
-        updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?, phone=? WEHERE id=?");
+        updateMemberPstmt = conn.prepareStatement("UPDATE members SET name=?, email=?, phone=? WHERE id=?");
         deleteMemberPstmt = conn.prepareStatement("DELETE FROM members WHERE id=?");
-        
+
         getMemberGamesPstmt = conn.prepareStatement("SELECT * FROM games WHERE members_id=?");
 
         getAllGamesPstmt = conn.prepareStatement("SELECT * FROM games ORDER BY name ASC");
@@ -144,18 +144,27 @@ public class DbModel {
         return addMemberPstmt.executeUpdate();
     }
 
+    public int updateMember(Member member) throws SQLException {
+        updateMemberPstmt.setString(1, member.getName());
+        updateMemberPstmt.setString(2, member.getEmail());
+        updateMemberPstmt.setString(3, member.getPhone());
+        updateMemberPstmt.setInt(4, member.getId());
+
+        return updateMemberPstmt.executeUpdate();
+    }
+
     public int deleteMember(Member member) throws SQLException {
         deleteMemberPstmt.setInt(1, member.getId());
 
         return deleteMemberPstmt.executeUpdate();
     }
-    
-    public List<Game> getMemberGames (Member member) throws SQLException{
+
+    public List<Game> getMemberGames(Member member) throws SQLException {
         getMemberGamesPstmt.setInt(1, member.getId());
-        
+
         List<Game> membersGames = new ArrayList<>();
         ResultSet rs = getMemberGamesPstmt.executeQuery();
-        while (rs.next()){
+        while (rs.next()) {
             membersGames.add(new Game(
                     rs.getInt("id"),
                     rs.getString("name"),
@@ -165,7 +174,7 @@ public class DbModel {
                     rs.getString("rental_date")
             ));
         }
-        
+
         return membersGames;
     }
 

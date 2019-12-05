@@ -228,7 +228,7 @@ public class Login extends javax.swing.JFrame {
             tfPassword.setText("");
             
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Wrong Username or password!", "WRONG DATA!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "Wrong username or password!", "WRONG DATA!", JOptionPane.WARNING_MESSAGE);
 
         }
     }//GEN-LAST:event_btnLoginActionPerformed
