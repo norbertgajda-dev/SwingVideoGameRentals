@@ -1,11 +1,10 @@
 package gui;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -24,7 +23,6 @@ public class ManageGamesDialog extends javax.swing.JDialog implements TableModel
     private List<Game> games;
     private DefaultTableModel dtm;
     private String searchString = "";
-    private boolean isSearch = false;
 
     public ManageGamesDialog(java.awt.Dialog parent, DbModel model) {
         super(parent, true);
@@ -321,7 +319,6 @@ public class ManageGamesDialog extends javax.swing.JDialog implements TableModel
     }//GEN-LAST:event_btnDeleteGames1ActionPerformed
 
     private void tfSearchGameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfSearchGameKeyReleased
-        isSearch = true;
         searchString = tfSearchGame.getText();
         refreshTable();
 
@@ -381,14 +378,15 @@ public class ManageGamesDialog extends javax.swing.JDialog implements TableModel
     private void refreshTable() {
         try {
             Map<Integer, Member> membersMap = model.getMapMembers();
+            List<Game> removeGames = new ArrayList<>();
             games = model.getAllVideoGames();
-
+      
             dtm.getDataVector().clear();
             dtm.fireTableDataChanged();
 
             for (Game game : games) {
 
-                if (isSearch == false || (isSearch == true && game.getName().contains(searchString))) {
+                if (game.getName().contains(searchString)) {
                     Vector row = new Vector();
 
                     row.add(game.getName());
@@ -397,15 +395,18 @@ public class ManageGamesDialog extends javax.swing.JDialog implements TableModel
                     if (game.getMembers_id() == 0) {
                         row.add("in the store");
                     } else {
-                        //needs to check if it is a deleted member!
                         row.add(membersMap.get(game.getMembers_id()).getName());
                     }
                     dtm.addRow(row);
+                } else {
+                    removeGames.add(game);
                 }
             }
-            tblGames.setRowSelectionInterval(0, 0);
-
-            isSearch = false;
+            games.removeAll(removeGames);
+            if (!games.isEmpty()) {
+                tblGames.setRowSelectionInterval(0, 0);
+            }
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database Error!", JOptionPane.ERROR_MESSAGE);
         }

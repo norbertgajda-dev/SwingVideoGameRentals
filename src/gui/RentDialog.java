@@ -236,6 +236,7 @@ public class RentDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(rootPane, "Returned in " + days + " days! You have to pay " + overdueFine(days) + " euro(s) overdue fine!", "Thank You!", JOptionPane.INFORMATION_MESSAGE);
                 }
                 game.setMembers_id(0);
+                game.setRental_date(null);
                 model.updateGames(game);
                 lstMembersMousePressed(null);
                 btnRent.setEnabled(false);
