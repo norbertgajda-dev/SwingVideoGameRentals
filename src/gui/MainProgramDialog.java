@@ -16,13 +16,13 @@ import model.Member;
  *
  * @author GAJDA NORBERT
  */
-public class MainProgramDialog extends javax.swing.JDialog implements TableModelListener {
+public class MainProgramDialog extends javax.swing.JDialog {
 
-    DbModel model;
-    DefaultTableModel dtmGames;
-    DefaultTableModel dtmMembers;
-    List<Game> games;
-    List<Member> members;
+    private DbModel model;
+    private DefaultTableModel dtmGames;
+    private DefaultTableModel dtmMembers;
+    private List<Game> games;
+    private List<Member> members;
 
     public MainProgramDialog(java.awt.Frame parent, DbModel model, String username) {
         super(parent, true);
@@ -34,23 +34,16 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
         lblWelcome.setText(username);
 
-        try {
-            games = model.getAllVideoGames();
-            members = model.getAllMembers();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Adatbázis hiba", JOptionPane.ERROR_MESSAGE);
-        }
-
-        //getting table model, and add listener for the later modifications in the table
+        refreshTable();
+        
+        //getting table model
         dtmGames = (DefaultTableModel) tblGames.getModel();
-        dtmGames.addTableModelListener(this);
         dtmMembers = (DefaultTableModel) tblMembers.getModel();
-        dtmMembers.addTableModelListener(this);
 
         //default view will always be the Games table
         tbtnVideoGamesActionPerformed(null);
 
-        //for the tabs UI elements to be simple
+        //for the tabs UI elements to be simple black
         tbpGamesMembers.setUI(new BasicTabbedPaneUI());
 
     }
@@ -122,14 +115,14 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
 
             },
             new String [] {
-                "Name", "Genre", "Platform", "In Stock"
+                "Name", "Genre", "Platform", "In "
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -142,11 +135,15 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         });
         tblGames.setFillsViewportHeight(true);
         tblGames.setGridColor(new java.awt.Color(102, 102, 102));
+        tblGames.setRowHeight(18);
         tblGames.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tblGames.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jScrollPane1.setViewportView(tblGames);
         if (tblGames.getColumnModel().getColumnCount() > 0) {
-            tblGames.getColumnModel().getColumn(3).setHeaderValue("In ");
+            tblGames.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblGames.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tblGames.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tblGames.getColumnModel().getColumn(3).setPreferredWidth(50);
         }
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -180,13 +177,21 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tblMembers.setFillsViewportHeight(true);
         tblMembers.setGridColor(new java.awt.Color(102, 102, 102));
+        tblMembers.setRowHeight(18);
         tblMembers.setSelectionBackground(new java.awt.Color(51, 51, 51));
         tblMembers.setSelectionForeground(new java.awt.Color(102, 102, 102));
         jScrollPane2.setViewportView(tblMembers);
@@ -341,15 +346,17 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnManageEmployees, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 11, Short.MAX_VALUE))
                     .addComponent(btnManageMembers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnManageGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbtnMembers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbtnVideoGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnManageGames, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnManageEmployees, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,14 +449,13 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
         } else
             tbtnMembersActionPerformed(null);
     }//GEN-LAST:event_tbpGamesMembersMouseReleased
-
+       
     private void btnManageMembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageMembersActionPerformed
-        try {
-            model.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Database ERROR!", JOptionPane.ERROR_MESSAGE);
-        }
-        System.exit(0);
+        ManageMembersDialog mmd = new ManageMembersDialog(this, model);
+        mmd.setVisible(true);
+        refreshTable();
+        tbpGamesMembersMouseReleased(null);
+        
     }//GEN-LAST:event_btnManageMembersActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -462,13 +468,16 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnManageGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageGamesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnManageGamesActionPerformed
+        ManageGamesDialog mgd = new ManageGamesDialog (this, model);
+        mgd.setVisible(true);
+        refreshTable();
+        tbpGamesMembersMouseReleased(null);    }//GEN-LAST:event_btnManageGamesActionPerformed
 
     private void btnManageEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageEmployeesActionPerformed
         ManageEmployeesDialog med = new ManageEmployeesDialog(this, model);
         med.setVisible(true);
-        
+        refreshTable();
+        tbpGamesMembersMouseReleased(null);
     }//GEN-LAST:event_btnManageEmployeesActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -500,9 +509,13 @@ public class MainProgramDialog extends javax.swing.JDialog implements TableModel
     private javax.swing.JToggleButton tbtnVideoGames;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void tableChanged(TableModelEvent arg0) {
-
+    private void refreshTable() {
+        try {
+            games = model.getAllVideoGames();
+            members = model.getAllMembers();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.toString(), "Adatbázis hiba", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 }

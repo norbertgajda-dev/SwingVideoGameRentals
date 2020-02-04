@@ -18,6 +18,14 @@ public class Game implements Serializable{
     public Game() {
     }
 
+    public Game(String name, String genre, String platform, int members_id, String rental_date) {
+        this.name = name;
+        this.genre = genre;
+        this.platform = platform;
+        this.members_id = members_id;
+        this.rental_date = rental_date;
+    }
+    
     public Game(int id, String name, String genre, String platform, int members_id, String rental_date) {
         this.id = id;
         this.name = name;
@@ -26,6 +34,13 @@ public class Game implements Serializable{
         this.members_id = members_id;
         this.rental_date = rental_date;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+    
+    
 
     public String getRental_date() {
         return rental_date;
